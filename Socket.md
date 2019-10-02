@@ -41,9 +41,12 @@ from socket import *
 serverPort = 80
 serverSocket = socket(AF_INET,SOCK_STREAM)
 serverSocket.bind(('',serverPort))
+#serverSocker用于监听端口接受到的连接
 serverSocket.listen(1)
 while 1:
+        #三次握手时创建了connectionSocket
 	connectionSocket,addr = serverSocket.accept()
+	#建立连接后使用connectionSocket通信
 	sentence = connectionSocket.recv(1024)
 	connectionSocket.send('the message to be send')
 	connectionSocket.close()
@@ -55,7 +58,7 @@ while 1:
 ## TCP 对比 UDP
 - 创建套接字时指定的第二个参数不一样，UDP 是SOCK_DGRAM，而TCP 是SOCK_STREAM
 - TCP 的客户端创建套接字后，调用了connect,而 UDP 没有调用connect
-- TCP 服务器首先创建了一个欢迎套接字（serverSocket)，这个套接字用于处理来自客户端的连接，它为每个连接创建一个连接套接字(connectionSocket)，  
+- TCP 服务器首先创建了一个欢迎套接字（serverSocket)，这个套接字调用listen函数监听来自客户端的连接，它为收到的每个连接创建一个连接套接字(connectionSocket)，  
 与客户端的信息发送与接受是通过连接套接字进行的。而 UDP 没有为每一个连接创建一个单独的套接字，而是使用了同一个套接字
 - TCP 与 UDP 使用了不同的发送与接受函数
 ### 原因分析
